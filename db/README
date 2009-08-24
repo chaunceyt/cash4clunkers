@@ -1,0 +1,8 @@
+Results of scraper 
+
+select count(*) as total from dealerships;
++-------+
+| total |
++-------+
+|  2742 | 
++-------+
