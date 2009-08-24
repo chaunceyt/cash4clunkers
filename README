@@ -1,0 +1,8 @@
+Cars for Clunkers a Transparency Application
+
+A simple application to MAP the locations of car dealership listed here: http://www.cars.gov/dealer-locator
+
+I figure using
+    Google Maps, 
+    GovTracks district overlays 
+    and the sunlight api data 
