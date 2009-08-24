@@ -1,2 +1,24 @@
 I'm hoping someone here has a way to scrape this PDF: http://www.cars.gov/files/disposal-salvage/ELVS.pdf (283 pages)
 into csv.
+
+Thanks to Joe Germuska
+> I've spent a fair amount of time looking at it using pdftotext, copy and pasting into excel but yet figured out a way to get clean data.
+>  
+> If some one could parse that PDF. I would be grateful.
+
+Have you tried the "-layout" option to pdftotext?  After you use that, just pull out lines in the text file matching the regular expression
+
+^\s*(.+?)\s{2,}(.+?)\s{2,}(.+?)\s{2,}(\d+)$
+
+That is, some lines begin with white space.  All columns are separated by two or more white spaces, and all rows end in all-numeric unique IDs.  Rows which don't match that pattern are the superfluous "State" separators or other junk.  If you wanted to break down the city, state, ZIP, you could use 
+
+^\s*(.+?)\s{2,}(.+?)\s{2,}(.+?) (..) (\d{5})\s{2,}(\d+)$
+
+Hope that helps,
+Joe
+
+-- 
+Joe Germuska
+Joe@Germuska.com * http://blog.germuska.com   
+
+cool..
