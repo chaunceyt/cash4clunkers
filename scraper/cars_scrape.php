@@ -54,7 +54,7 @@ $states = array(
 
 $_states = array();
 
-$dbconn = mysql_connect('localhost','root','password');
+$dbconn = mysql_connect('localhost','root','vibespin');
 if($dbconn) {
     mysql_select_db('test_db') or die('ERROR: ' . mysql_error());;
 }
@@ -74,8 +74,10 @@ foreach($states as $key => $_state_long) {
     foreach($tr[1] as $tr_rows) {
         preg_match_all('#<td[^>]*>(.+?)<\/td>#is', $tr_rows, $td);
         $dealerships[$i]['dealername'] = trim($td[1][0]);
-        list($address, $city, $state, $zip) = explode('<br />', trim($td[1][1]));
+        $_address_str = str_replace('<br />', ',',trim($td[1][1]));
+        list($address, $address2, $city, $state, $zip) = explode(',', strip_tags($_address_str));
         $dealerships[$i]['address'] = trim($address);
+        $dealerships[$i]['address2'] = trim($address2);
         $dealerships[$i]['city'] = trim($city);
         $dealerships[$i]['state'] = trim($state);
         $dealerships[$i]['zip'] = trim($zip);
@@ -87,14 +89,17 @@ foreach($states as $key => $_state_long) {
 
 foreach($_state_arr as $state_str) {
     foreach($state_str as $state) {
-        $sql = "INSERT INTO dealerships (id, dealername, address, city, state, zip, phone)
+        print_r($state);
+        $_state = trim(strip_tags($state['state']));
+        $sql = "INSERT INTO dealerships (id, dealername, address, address2, city, state, zip, phone)
                 VALUES ('',
                         '".$state['dealername']."',
                         '".$state['address']."',
-                        '".$state['city']."',
-                        '".$state['state']."',
+                        '".$state['address2']."',
+                        '".strip_tags($state['city'])."',
+                        '".$_state."',
                         '".$state['zip']."',
                         '".$state['phone']."')";
         mysql_query($sql);
-    }
+        }
 }
